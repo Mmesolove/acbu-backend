@@ -8,6 +8,7 @@ export interface AuthRequest extends Request {
   apiKey?: {
     id: string;
     userId: string | null;
+    organizationId: string | null;
     permissions: string[];
     rateLimit: number;
   };
@@ -40,6 +41,7 @@ export const validateApiKey = async (
       },
       include: {
         user: true,
+        organization: true,
       },
     });
 
@@ -55,7 +57,8 @@ export const validateApiKey = async (
 
     req.apiKey = {
       id: apiKeyRecord.id,
-      userId: apiKeyRecord.userId,
+      userId: apiKeyRecord.userId ?? null,
+      organizationId: apiKeyRecord.organizationId ?? null,
       permissions: (apiKeyRecord.permissions as string[]) || [],
       rateLimit: apiKeyRecord.rateLimit,
     };
@@ -83,7 +86,7 @@ export async function generateApiKey(userId?: string, permissions: string[] = []
 
   await prisma.apiKey.create({
     data: {
-      userId: userId || null,
+      userId: userId ?? null,
       keyHash,
       permissions: permissions as any,
     },

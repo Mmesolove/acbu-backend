@@ -12,6 +12,15 @@ import mintRoutes from './mintRoutes';
 import burnRoutes from './burnRoutes';
 import ratesRoutes from './ratesRoutes';
 import transactionRoutes from './transactionRoutes';
+import p2pRoutes from './p2pRoutes';
+import smeRoutes from './smeRoutes';
+import internationalRoutes from './internationalRoutes';
+import salaryRoutes from './salaryRoutes';
+import enterpriseRoutes from './enterpriseRoutes';
+import savingsRoutes from './savingsRoutes';
+import lendingRoutes from './lendingRoutes';
+import gatewayRoutes from './gatewayRoutes';
+import billsRoutes from './billsRoutes';
 
 const router: ReturnType<typeof Router> = Router();
 
@@ -60,5 +69,14 @@ router.use('/mint', mintRoutes);
 router.use('/burn', burnRoutes);
 router.use('/rates', ratesRoutes);
 router.use('/transactions', transactionRoutes);
+router.use('/p2p', p2pRoutes);
+router.use('/sme', smeRoutes);
+router.use('/international', internationalRoutes);
+router.use('/salary', salaryRoutes);
+router.use('/enterprise', enterpriseRoutes);
+router.use('/savings', savingsRoutes);
+router.use('/lending', lendingRoutes);
+router.use('/gateway', gatewayRoutes);
+router.use('/bills', billsRoutes);
 
 export default router;

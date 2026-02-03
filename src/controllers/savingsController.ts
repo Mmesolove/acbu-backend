@@ -1,0 +1,84 @@
+import { Request, Response, NextFunction } from 'express';
+import { acbuSavingsVaultService } from '../services/contracts';
+import { contractAddresses } from '../config/contracts';
+import type { AuthRequest } from '../middleware/auth';
+import { AppError } from '../middleware/errorHandler';
+
+export async function postSavingsDeposit(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { user, amount, term_seconds } = (req as AuthRequest).body || {};
+    if (!user || !amount || term_seconds == null) {
+      throw new AppError('user, amount, and term_seconds required', 400);
+    }
+    if (!contractAddresses.savingsVault) {
+      throw new AppError('Savings vault contract not configured', 503);
+    }
+    const result = await acbuSavingsVaultService.deposit({
+      user,
+      amount: String(amount),
+      termSeconds: Number(term_seconds),
+    });
+    res.status(200).json({
+      transaction_hash: result.transactionHash,
+      new_balance: result.newBalance,
+    });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function postSavingsWithdraw(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { user, term_seconds, amount } = (req as AuthRequest).body || {};
+    if (!user || term_seconds == null || !amount) {
+      throw new AppError('user, term_seconds, and amount required', 400);
+    }
+    if (!contractAddresses.savingsVault) {
+      throw new AppError('Savings vault contract not configured', 503);
+    }
+    const txHash = await acbuSavingsVaultService.withdraw({
+      user,
+      termSeconds: Number(term_seconds),
+      amount: String(amount),
+    });
+    res.status(200).json({ transaction_hash: txHash });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function getSavingsPositions(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const user = (req as AuthRequest).query?.user as string;
+    const termSeconds = (req as AuthRequest).query?.term_seconds as string;
+    if (!user) {
+      throw new AppError('query user required', 400);
+    }
+    if (!contractAddresses.savingsVault) {
+      throw new AppError('Savings vault contract not configured', 503);
+    }
+    const balance = await acbuSavingsVaultService.getBalance(
+      user,
+      termSeconds != null ? Number(termSeconds) : 0
+    );
+    res.status(200).json({
+      user,
+      term_seconds: termSeconds != null ? Number(termSeconds) : null,
+      balance,
+    });
+  } catch (e) {
+    next(e);
+  }
+}

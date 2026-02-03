@@ -6,7 +6,7 @@ import { Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { prisma } from '../config/database';
 import { getContractAddresses } from '../config/contracts';
-import { burningService } from '../services/contracts';
+import { acbuBurningService } from '../services/contracts';
 import { AuthRequest } from '../middleware/auth';
 import { Decimal } from '@prisma/client/runtime/library';
 import { logAudit } from '../services/audit';
@@ -67,7 +67,7 @@ export async function burnAcbu(
     const addresses = getContractAddresses();
     if (addresses.burning) {
       try {
-        const result = await burningService.burnForCurrency({
+        const result = await acbuBurningService.burnForCurrency({
           acbuAmount: acbuAmount7,
           currency,
           recipientAccount: {

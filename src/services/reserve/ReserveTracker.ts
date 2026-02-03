@@ -3,7 +3,7 @@ import { config } from '../../config/env';
 import { getContractAddresses } from '../../config/contracts';
 import { logger } from '../../config/logger';
 import { getFintechRouter } from '../fintech';
-import { reserveTrackerService } from '../contracts';
+import { acbuReserveTrackerService } from '../contracts';
 import { basketService } from '../basket';
 import { getRabbitMQChannel } from '../../config/rabbitmq';
 import { QUEUES } from '../../config/rabbitmq';
@@ -95,7 +95,7 @@ export class ReserveTracker {
           const contractAddresses = getContractAddresses();
           if (contractAddresses.reserveTracker) {
             try {
-              const txHash = await reserveTrackerService.updateReserve({
+              const txHash = await acbuReserveTrackerService.updateReserve({
                 currency,
                 amount: toReserveUnits(balance),
                 valueUsd: toReserveUnits(reserveValueUsd),

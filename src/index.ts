@@ -105,10 +105,16 @@ async function startServer() {
     await startWithdrawalProcessingConsumer();
 
     // Register MintEvent/BurnEvent handlers and start Stellar event listener (runs in background)
-    const { startMintEventListener } = await import('./jobs/mintEventListener');
+    const { startMintEventListener } = await import('./jobs/acbu_minting_event_listener');
     await startMintEventListener();
-    const { startBurnEventListener } = await import('./jobs/burnEventListener');
+    const { startBurnEventListener } = await import('./jobs/acbu_burning_event_listener');
     await startBurnEventListener();
+    const { startSavingsVaultEventListener } = await import('./jobs/acbu_savings_vault_event_listener');
+    await startSavingsVaultEventListener();
+    const { startLendingPoolEventListener } = await import('./jobs/acbu_lending_pool_event_listener');
+    await startLendingPoolEventListener();
+    const { startEscrowEventListener } = await import('./jobs/acbu_escrow_event_listener');
+    await startEscrowEventListener();
     const { eventListener } = await import('./services/stellar/eventListener');
     void eventListener.start();
 

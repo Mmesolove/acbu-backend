@@ -1,5 +1,5 @@
 /**
- * Listens for MintEvent (contract_credited) on the minting contract and enqueues USDC_CONVERSION jobs.
+ * Listens for MintEvent (contract_credited) on acbu_minting contract and enqueues USDC_CONVERSION jobs.
  */
 import { eventListener, ContractEvent } from '../services/stellar/eventListener';
 import { contractAddresses } from '../config/contracts';

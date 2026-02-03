@@ -1,5 +1,5 @@
 /**
- * Listens for BurnEvent (contract_debited) on the burning contract and enqueues WITHDRAWAL_PROCESSING jobs.
+ * Listens for BurnEvent (contract_debited) on acbu_burning contract and enqueues WITHDRAWAL_PROCESSING jobs.
  */
 import { eventListener, ContractEvent } from '../services/stellar/eventListener';
 import { contractAddresses } from '../config/contracts';

@@ -6,7 +6,7 @@ import { prisma } from '../../config/database';
 import { config } from '../../config/env';
 import { getFintechRouter } from '../fintech';
 import { basketService } from '../basket';
-import { oracleService } from '../contracts';
+import { acbuOracleService } from '../contracts';
 import { getContractAddresses } from '../../config/contracts';
 import { logger } from '../../config/logger';
 import { Prisma } from '@prisma/client';
@@ -140,7 +140,7 @@ export async function fetchAndStoreRates(): Promise<void> {
           const sourcesForContract = [centralBankRate, fintechRate, forexRate]
             .filter((r): r is number => r != null && r > 0)
             .map(String);
-          await oracleService.updateRate({
+          await acbuOracleService.updateRate({
             currency,
             rate: rate7,
             sources: sourcesForContract,

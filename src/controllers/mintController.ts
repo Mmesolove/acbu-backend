@@ -6,7 +6,7 @@ import { Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { prisma } from '../config/database';
 import { getContractAddresses } from '../config/contracts';
-import { mintingService } from '../services/contracts';
+import { acbuMintingService } from '../services/contracts';
 import { AuthRequest } from '../middleware/auth';
 import { Decimal } from '@prisma/client/runtime/library';
 import { logAudit } from '../services/audit';
@@ -58,7 +58,7 @@ export async function mintFromUsdc(
     const addresses = getContractAddresses();
     if (addresses.minting) {
       try {
-        const result = await mintingService.mintFromUsdc({
+        const result = await acbuMintingService.mintFromUsdc({
           usdcAmount: usdcAmount7,
           recipient: wallet_address,
         });

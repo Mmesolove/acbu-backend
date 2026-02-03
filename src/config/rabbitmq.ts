@@ -62,6 +62,9 @@ export const QUEUES = {
   WEBHOOKS: 'webhooks',
   KYC_PROCESSING: 'kyc_processing',
   WALLET_ACTIVATION: 'wallet_activation', // send XLM to user wallet when KYC fee paid
+  ACBU_SAVINGS_VAULT_EVENTS: 'acbu_savings_vault_events',
+  ACBU_LENDING_POOL_EVENTS: 'acbu_lending_pool_events',
+  ACBU_ESCROW_EVENTS: 'acbu_escrow_events',
 } as const;
 
 // Exchange names
