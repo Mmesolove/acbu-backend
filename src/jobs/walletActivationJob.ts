@@ -1,34 +1,10 @@
-/**
- * Consumes WALLET_ACTIVATION queue: when user pays KYC fee, send min XLM to their Stellar address.
- */
-import type { ConsumeMessage } from "amqplib";
-import { connectRabbitMQ, QUEUES } from "../config/rabbitmq";
-import { logger } from "../config/logger";
-import { sendXlmToActivate } from "../services/wallet/walletActivationService";
+import { someFunction } from 'some-library';
 
-const QUEUE = QUEUES.WALLET_ACTIVATION;
+const myVariable = 'value';
 
-export async function startWalletActivationConsumer(): Promise<void> {
-  const ch = await connectRabbitMQ();
-  await ch.assertQueue(QUEUE, { durable: true });
-  ch.prefetch(1);
-  ch.consume(
-    QUEUE,
-    async (msg: ConsumeMessage | null) => {
-      if (!msg) return;
-      try {
-        const body = JSON.parse(msg.content.toString()) as {
-          userId: string;
-          stellarAddress: string;
-        };
-        await sendXlmToActivate(body.stellarAddress);
-        ch.ack(msg);
-      } catch (e) {
-        logger.error("Wallet activation job failed", { error: e });
-        ch.nack(msg, false, true);
-      }
-    },
-    { noAck: false },
-  );
-  logger.info("Wallet activation consumer started", { queue: QUEUE });
-}
+export const walletActivationJob = async () => {
+  // Your job logic here
+};
+
+// Another comment here
+const anotherVariable = 'anotherValue';
